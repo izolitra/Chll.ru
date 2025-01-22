@@ -1,0 +1,90 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<div class="modal fade" id="equipmentChoiceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Подбор оборудования
+                    <div id="loadingIndicator" style="display: none;">
+                        <span>Отправка...</span>
+                    </div>
+                    <div style="font-size: 14px; font-style: italic;">Символом * обозначены поля обязательные для заполнения</div>
+                </h5>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input required type="text" id="name" name="name" class="rm4-form-control form" placeholder="Имя*">
+                <input required type="text" id="phone" name="phone" class="rm4-form-control form" placeholder="Телефон*">
+                <input required type="text" id="email" name="email" class="rm4-form-control form" placeholder="Email-адрес*">
+                <textarea id="comment" name="comment" rows="3" class="rm4-form-control comm" placeholder="Комментарий" maxlength="500"></textarea>
+                <textarea id="cartDetails" name="cartDetails" rows="10" class="form-control my-2 no-interaction" readonly></textarea>
+                <div id="commentCharCount" class="text-right text-muted">0/500</div>
+                <input id="multipleFileInput" class="form-control-file my-2" type="file" name="file" multiple>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                <button type="submit" id="equipmentChoiceBtn" class="btn btn-primary">Отправить</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/static/js/send_cart.js"></script>
+<style>
+    .no-interaction {
+        pointer-events: none;
+        user-select: none;
+        background-color: #f8f9fa;
+        border: none;
+        resize: none;
+        outline: none;
+    }
+    .rm4-form-control.form {
+        width: 465px;
+        margin-top: 10px;
+    }
+    .rm4-form-control.comm {
+        width: 465px;
+        height: 200px;
+        margin-top: 10px;
+    }
+</style>
+<script>
+$(document).ready(function() {
+    const commentTextArea = document.getElementById('comment');
+    const charCountDisplay = document.getElementById('commentCharCount');
+    const maxChars = commentTextArea.getAttribute('maxlength');
+
+    commentTextArea.addEventListener('input', function () {
+        const currentLength = commentTextArea.value.length;
+        charCountDisplay.textContent = `${currentLength}/${maxChars}`;
+    });
+
+    $('#equipmentChoiceModal').on('show.bs.modal', function () {
+        let cartItems = [];
+        let totalSum = 0;
+
+        {% for item in request.user.cart.cartquantity_set.all %}
+            cartItems.push({
+                product: "{{ item.product.title }}",
+                brand: "{{ item.product.brand }}",
+                quantity: parseInt("{{ item.quantity }}", 10),
+                price: parseFloat("{{ item.product.price }}")
+            });
+        {% endfor %}
+
+        let cartDetails = "Товары в корзине:\n";
+        cartItems.forEach(function (item) {
+            cartDetails += `${item.brand} ${item.product} - ${item.quantity} шт. по цене ${item.price} руб.\n`;
+            totalSum += item.quantity * item.price;
+        });
+        cartDetails += `\nОбщая сумма заказа: ${totalSum.toFixed(2)} руб.`;
+
+        document.getElementById('cartDetails').value = cartDetails;
+    });
+});
+
+
+</script>

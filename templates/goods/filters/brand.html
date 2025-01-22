@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ brand.title }}</title>
+
+  <style>
+    .brand-logo {
+      max-width: 100%;
+      height: auto;
+    }
+    .brand-title {
+      font-size: 2rem;
+      color: #343a40;
+      margin-top: 1rem;
+    }
+    .brand-description {
+      font-size: 17px;
+      color: #6c757d;
+    }
+    .brand-info {
+      background-color: #e9ecef;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 20px;
+      width: 100%; /* Задаем фиксированную ширину */
+    }
+    .container {
+      max-width: 1300px; /* Максимальная ширина контейнера */
+    }
+    .custom-width {
+      width: 114%; /* Задаем пользовательскую ширину панели */
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="brand-info custom-width">
+          <img src="{% if brand.image %}{{ brand.image.url }}{% else %}{% static 'img/no_image_brand.png' %}{% endif %}" alt="Brand Logo" class="brand-logo">
+          <h1 class="brand-title">{{ brand.name }}</h1>
+          <p class="brand-description">{{ brand.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Подключение скриптов Bootstrap (необязательно, если они уже подключены в вашем проекте) -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

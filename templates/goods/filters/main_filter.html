@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .badge {
+            display: flex;
+            align-items: center;
+            padding: 0.5em;
+            cursor: pointer;
+        }
+        .badge:hover .fas.fa-times {
+            filter: invert(1) brightness(1.2);
+            display: inline-block; /* Добавлено */
+        }
+        .badge a {
+            margin-left: 0.5em;
+            text-decoration: none;
+        }
+        .badge .fas.fa-times {
+            filter: invert(1);
+            display: none; /* Добавлено */
+        }
+        .badge.badge-primary .fas.fa-times {
+            filter: invert(1);
+        }
+        .badge.badge-success .fas.fa-times {
+            filter: invert(1);
+        }
+        .badge.badge-info .fas.fa-times {
+            filter: invert(1);
+        }
+        .badge.badge-warning .fas.fa-times {
+            filter: invert(1);
+        }
+        .badge.badge-danger .fas.fa-times {
+            filter: invert(1);
+        }
+        .badge.badge-secondary .fas.fa-times {
+            filter: invert(1);
+        }
+        .badge.badge-light .fas.fa-times {
+            filter: invert(1);
+        }
+        .badge.badge-dark .fas.fa-times {
+            filter: invert(1);
+        }
+        #clear-filters {
+  margin-bottom: 10px; /* Добавляем вертикальный отступ снизу */
+}
+.page-length {
+  margin-top: 10px; /* Добавляем вертикальный отступ сверху */
+}
+    </style>
+</head>
+<body>
+
+<h2>Фильтры</h2>
+
+<!-- Примененные фильтры -->
+{% if request.GET.category or request.GET.brand or request.GET.invertor or request.GET.availability or request.GET.price_min or request.GET.price_max or request.GET.Powerr or request.GET.BlockType or request.GET.SplitSystem %}
+    <div class="d-flex flex-wrap">
+    {% if request.GET.category %}
+        <span class="badge badge-pill badge-primary mr-2 mb-2">
+            <i class="fas fa-tags"></i>&nbsp;Категория: {{ request.GET.category }}
+            <a href="#" class="remove-filter" data-filter="category">&nbsp;<i class="fas fa-times"></i></a>
+        </span>
+    {% endif %}
+    {% if request.GET.brand %}
+        <span class="badge badge-pill badge-success mr-2 mb-2">
+            <i class="fas fa-gem"></i>&nbsp;Бренд: {{ request.GET.brand }}
+            <a href="#" class="remove-filter" data-filter="brand">&nbsp;<i class="fas fa-times"></i></a>
+        </span>
+    {% endif %}
+    {% if request.GET.invertor %}
+        <span class="badge badge-pill badge-info mr-2 mb-2">
+            <i class="fas fa-lightbulb"></i>&nbsp;Инвертор
+            <a href="#" class="remove-filter" data-filter="invertor">&nbsp;<i class="fas fa-times"></i></a>
+        </span>
+    {% endif %}
+
+    {% if request.GET.availability %}
+        <span class="badge badge-pill badge-warning mr-2 mb-2">
+            <i class="fas fa-check-circle"></i>&nbsp;Только товары в наличии
+            <a href="#" class="remove-filter" data-filter="availability">&nbsp;<i class="fas fa-times"></i></a>
+        </span>
+    {% endif %}
+    {% if request.GET.price_min or request.GET.price_max %}
+        <span class="badge badge-pill badge-danger mr-2 mb-2">
+            <i class="fas fa-dollar-sign"></i>&nbsp;Цена от: {{ request.GET.price_min|default:'Не указано' }} до: {{ request.GET.price_max|default:'Не указано' }}
+            <a href="#" class="remove-filter" data-filter="price_min,price_max">&nbsp;<i class="fas fa-times"></i></a>
+        </span>
+    {% endif %}
+    {% if request.GET.Powerr %}
+        <span class="badge badge-pill badge-secondary mr-2 mb-2">
+            <i class="fas fa-bolt"></i>&nbsp;Мощность: {{ request.GET.Powerr }}
+            <a href="#" class="remove-filter" data-filter="Powerr">&nbsp;<i class="fas fa-times"></i></a>
+        </span>
+    {% endif %}
+    {% if request.GET.BlockType %}
+        <span class="badge badge-pill badge-light mr-2 mb-2">
+            <i class="fas fa-cube"></i>&nbsp;Тип блока: {{ request.GET.BlockType }}
+            <a href="#" class="remove-filter" data-filter="BlockType">&nbsp;<i class="fas fa-times"></i></a>
+        </span>
+    {% endif %}
+    {% if request.GET.SplitSystem %}
+        <span class="badge badge-pill badge-dark mr-2 mb-2">
+            <i class="fas fa-asterisk"></i>&nbsp;Тип сплит-системы: {{ request.GET.SplitSystem }}
+            <a href="#" class="remove-filter" data-filter="SplitSystem">&nbsp;<i class="fas fa-times"></i></a>
+        </span>
+    {% endif %}
+</div>
+
+{% endif %}
+
+<form id="filter-form" action="{% url 'category_list_start' %}" method="GET">
+    <div class="form-group">
+        {% if filter_settings.show_category_filter %}
+            <select name="category" class="form-control mb-2">
+                <option value="">Все категории</option>
+                {% for category in categories %}
+                    <option value="{{ category }}" {% if request.GET.category == category %}selected{% endif %}>{{ category }}</option>
+                {% endfor %}
+            </select>
+        {% endif %}
+
+        {% if filter_settings.show_brand_filter %}
+            <select name="brand" class="form-control mb-2">
+                <option value="">Все бренды</option>
+                {% for brand in brands_all %}
+                    <option value="{{ brand }}" {% if request.GET.brand == brand %}selected{% endif %}>{{ brand }}</option>
+                {% endfor %}
+            </select>
+        {% endif %}
+
+        {% if filter_settings.show_power_filter %}
+            <select name="Powerr" class="form-control mb-2">
+                <option value="">Все виды мощности</option>
+                {% for powerr in powerr_all %}
+                    <option value="{{ powerr }}" {% if request.GET.Powerr == powerr %}selected{% endif %}>{{ powerr }}</option>
+                {% endfor %}
+            </select>
+        {% endif %}
+
+        {% if filter_settings.show_blocktype_filter %}
+            <select name="BlockType" class="form-control mb-2">
+                <option value="">Все типы блоков</option>
+                {% for blocktype in blocktype_all %}
+                    <option value="{{ blocktype }}" {% if request.GET.BlockType == blocktype %}selected{% endif %}>{{ blocktype }}</option>
+                {% endfor %}
+            </select>
+        {% endif %}
+
+        {% if filter_settings.show_splitsystem_filter %}
+            <select name="SplitSystem" class="form-control mb-2">
+                <option value="">Все типы сплит систем</option>
+                {% for splitsystem in splitsystem_all %}
+                    <option value="{{ splitsystem }}" {% if request.GET.SplitSystem == splitsystem %}selected{% endif %}>{{ splitsystem }}</option>
+                {% endfor %}
+            </select>
+        {% endif %}
+            <!--
+            <div class="form-check mb-2">
+                <input type="checkbox" class="form-check-input" id="availability" name="availability" {% if request.GET.availability %}checked{% endif %}>
+                <label class="form-check-label" for="availability">Только товары в наличии</label>
+            </div>-->
+        <!--
+            <div class="form-check mb-2">
+                <input type="checkbox" class="form-check-input" id="invertor" name="invertor" {% if request.GET.invertor %}checked{% endif %}>
+                <label class="form-check-label" for="invertor">Инвертор</label>
+            </div>-->
+
+{% if filter_settings.show_invertor_filter %}
+    <ul class="rm4-flex rm4-flex-wrap custom-gap">
+      <li>
+        <input class="checkbox" type="checkbox" id="checkbox-1" id="invertor" name="invertor" {% if request.GET.invertor %}checked{% endif %}>
+        <label for="checkbox-1" for="invertor">Инвертор</label>
+      </li>
+    </ul>
+{% endif %}
+
+{% if filter_settings.show_availability_filter %}
+    <ul class="rm4-flex rm4-flex-wrap custom-gap">
+      <li>
+        <input class="checkbox" type="checkbox" id="checkbox-2" id="availability" name="availability" {% if request.GET.availability %}checked{% endif %}>
+        <label for="checkbox-2" for="availability">Только товары в наличии</label>
+      </li>
+    </ul>
+{% endif %}
+
+    <style>
+.custom-gap li {
+    margin-bottom: -1rem; /* Задаем меньшие отступы между элементами списка */
+}
+
+    </style>
+
+        {% if filter_settings.show_price_filter %}
+            <div class="form-group mb-2">
+                <label for="price_min">Цена:</label>
+                <div class="input-group">
+                    <input class="rm4-form-control rm4-text-sm" type="number" id="price_min" name="price_min" class="form-control" value="{{ request.GET.price_min }}" placeholder="От" >
+                    <div class="input-group-append">
+                        <button type="button" class="btn fw3-btn fw3-btn--primary" id="apply-price-min"><i class="fas fa-check"></i></button>
+                    </div>
+                </div>
+                <label for="price_max"></label>
+                <div class="input-group">
+                    <input class="rm4-form-control rm4-text-sm" type="number" id="price_max" name="price_max" class="form-control" value="{{ request.GET.price_max }}" placeholder="До" >
+                    <div class="input-group-append">
+                        <button type="button" class="btn fw3-btn fw3-btn--primary" id="apply-price-max"><i class="fas fa-check"></i></button>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+
+    <button type="button" class="fw3-btn fw3-btn--primary sbros" id="clear-filters">Сбросить фильтры</button>
+
+    <span class="page-link page-length">Показывать: </span>
+    <ul class="pagination">
+        {% with request.GET.urlencode as current_query %}
+            <li class="page-item">
+                <a class="page-link btn btn-secondary" href="?{{ current_query }}&per_page=30">30</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link btn btn-secondary" href="?{{ current_query }}&per_page=50">50</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link btn btn-secondary" href="?{{ current_query }}&per_page=100">100</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link btn btn-secondary" href="?{{ current_query }}&per_page=all">Все</a>
+            </li>
+        {% endwith %}
+    </ul>
+</form>
+
+<script>
+    // При изменении значений в форме, обновляем URL с новыми параметрами
+    document.querySelectorAll('select, input[type="checkbox"]').forEach(function(element) {
+        element.addEventListener('change', function() {
+            var params = new URLSearchParams(window.location.search);
+            var name = this.name;
+            if (this.type === 'checkbox') {
+                params.set(name, this.checked ? 'true' : '');
+            } else {
+                params.set(name, this.value);
+            }
+            window.location.href = '?' + params.toString();
+        });
+    });
+
+    // Функция для применения фильтра по цене
+    function applyPriceFilter() {
+        var params = new URLSearchParams(window.location.search);
+        var price_min = document.getElementById('price_min').value;
+        var price_max = document.getElementById('price_max').value;
+        params.set('price_min', price_min);
+        params.set('price_max', price_max);
+        window.location.href = '?' + params.toString();
+    }
+
+    // При клике на кнопку применения фильтра для минимальной цены
+    document.getElementById('apply-price-min').addEventListener('click', applyPriceFilter);
+
+    // При клике на кнопку применения фильтра для максимальной цены
+    document.getElementById('apply-price-max').addEventListener('click', applyPriceFilter);
+
+    // При клике на кнопку сброса, очищаем параметры URL
+    document.getElementById('clear-filters').addEventListener('click', function() {
+        window.location.href = window.location.pathname;
+    });
+
+    // При фокусировке на полях цены, убираем серый текст
+    document.getElementById('price_min').addEventListener('focus', function() {
+        if (this.value === 'Не указано') {
+            this.value = '';
+        }
+    });
+
+    document.getElementById('price_max').addEventListener('focus', function() {
+        if (this.value === 'Не указано') {
+            this.value = '';
+        }
+    });
+
+    // Функция для удаления конкретного фильтра
+    document.querySelectorAll('.remove-filter').forEach(function(element) {
+        element.addEventListener('click', function(event) {
+            event.preventDefault();
+            var filter = this.getAttribute('data-filter');
+            var params = new URLSearchParams(window.location.search);
+
+            if (filter.includes(',')) {
+                filter.split(',').forEach(function(f) {
+                    params.delete(f);
+                });
+            } else {
+                params.delete(filter);
+            }
+
+            window.location.href = '?' + params.toString();
+        });
+    });
+</script>
+    <style>
+
+        .fw3-btn--primary.sbros {
+            background-color: #505050 !important;
+            box-shadow: 0 4px 6px rgba(164, 164, 164, 0.83);
+        }
+    </style>
+</body>
+</html>

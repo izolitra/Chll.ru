@@ -1,0 +1,63 @@
+{% extends "goods/index.html" %}
+{% load static %}
+
+{% block content %}
+    {% include "goods/modals/equipment_choice2.html" %}
+        <style>
+
+        .page-length {
+            width: 196px; /* Примерная ширина */
+            display: inline-block; /* Для того чтобы ширина работала */
+        }
+    </style>
+<div class="col-12 mb-3 text-center">
+    <h2 style="font-weight: bold; font-size: 2rem;">{{ category.name }}</h2>
+</div>
+
+    <div class="custom-modal d-flex justify-content-center align-items-center">
+    <div class="p-4 custom-modal-dialog" style="max-width: 1000px; width: 100%;">
+        <div class="row">
+            <div class="col-12 row">
+                {% for product in products_all %}
+                    <div class="col-12 col-md-3 p-2">
+                        <div class="card card-product text-center justify-content-center position-relative">
+                            <a href="{{ product.get_absolute_url }}">
+                                <img class="img-fluid product-image" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}">
+                            </a>
+                            <a href="{{ product.get_absolute_url }}" class="mt-4 product-name text-dark">{{ product.title }}</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="pagination justify-content-center">
+                    <ul class="pagination">
+                        {% if products_all.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?{{ request.GET.urlencode }}&page=1">&laquo; первая</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?{{ request.GET.urlencode }}&page={{ products_all.previous_page_number }}">предыдущая</a>
+                            </li>
+                        {% endif %}
+                        <li class="page-item">
+                            <span class="page-link">
+                                Страница {{ products_all.number }} из {{ products_all.paginator.num_pages }}.
+                            </span>
+                        </li>
+                        {% if products_all.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?{{ request.GET.urlencode }}&page={{ products_all.next_page_number }}">следующая</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?{{ request.GET.urlencode }}&page={{ products_all.paginator.num_pages }}">последняя &raquo;</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

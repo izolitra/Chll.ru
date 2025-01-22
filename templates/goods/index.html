@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+{% load static %}
+<link rel="stylesheet"  href="{% static 'css/checkbox.css' %}?v=1">
+<link rel="stylesheet"  href="{% static 'css/css.css' %}?v=1">
+<link rel="stylesheet"  href="{% static 'css/AuthUserLogo.css' %}?v=1">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>{% block title %}Профессиональный подход к ВРВ системам{% endblock %}</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+
+ <link rel="stylesheet" type="text/css" href="{% static 'css/fonts.css' %}?v=1">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+      <a class="navbar-brand" href="/">VRV-systems</a>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="container">
+        <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="/" title="Каталог">Каталог</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/news/" title="Литература">Новости</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/contacts/" title="Контакты">Контакты</a>
+            </li>
+            <li class="nav-item">
+
+              {% if request.user.is_authenticated %}
+                <a class="nav-link" href="{% url 'profile' %}">{{request.user.username}}</a>
+              {% else %}
+                <a class="nav-link" href="{% url 'login' %}">Войти</a>
+              {% endif %}
+            </li>
+          </ul>
+            <form class="form-inline my-2 my-lg-0" action="{% url 'search_results' %}" method="get">
+                <input class="rm4-form-control rm4-text-sm rm4-margin-left-2xs" type="text" name="q" placeholder="Поиск">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
+            </form>
+
+        </div>
+      </div>
+    </nav>
+
+  {% block for_news %}
+    {% block circle-brand-owl %}
+  <div class="container">
+    <div class="row">
+      <div class="col-12 my-4">
+        <div class="owl-carousel owl-theme justify-content-between" id="slider">
+  {% for brand_one in brands_all %}
+    {% if not brand_one.draft %}
+      <div class="card card-wall p-3">
+        <a href="/brand/{{ brand_one.name|slugify }}" class="font-weight-bold text-center">
+          {% if brand_one.image %}
+            <img src="{{ brand_one.image.url }}" class="img-fluid img-wall" alt="{{ brand_one.name }}">
+          {% else %}
+            <img src="{% static 'img/no_image_brand.png' %}" class="img-fluid img-wall" alt="No Image Available">
+          {% endif %}
+        </a>
+      </div>
+    {% endif %}
+  {% endfor %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+            <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    {% include "goods/modals/request_modal.html" %}
+    {% include "goods/modals/message_success_modal.html" %}
+
+ <div class="container my-4" id="selection-button">
+    <div class="row">
+      <div class="col-12 d-flex justify-content-between">
+        {% if request.path != '/profile/' %}
+          <button type="button" class="fw3-btn fw3-btn--primary" data-toggle="modal" data-target="#equipmentChoiceModalTwo">Расчёт</button>
+          <button type="button" class="fw3-btn fw3-btn--primary" data-toggle="modal" data-target="#requestModal">Запрос</button>
+          <button type="button" class="fw3-btn fw3-btn--primary">Кн ВРВ-системы</button>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="popup-overlay"></div>
+{% endblock %}
+
+  {% endblock %}
+
+  {% block content %}
+  {% endblock %}
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'js/calculation_form.js' %}"></script>
+  <script>
+    $(document).ready(function(){
+      const slider = $("#slider").owlCarousel({
+        loop:true,
+        margin:30,
+        nav:false,
+        dots:false,
+        loop:true,
+        autoplay:true,
+        autoplayTimeout:2000,
+        smartSpeed:250,
+        responsive:{
+            0:{
+                items:1
+            },
+            600:{
+                items:3
+            },
+            1000:{
+                items:5
+            }
+        }
+      });
+    });
+  </script>
+  <script>
+    $(document).ready(function() {
+      var owl = $("#slider");
+
+      $("#slider").owlCarousel({
+        loop:true,
+        margin:30,
+        nav:false,
+        dots:false,
+        loop:true,
+        autoplay:true,
+        autoplayTimeout:2000,
+        smartSpeed:250,
+        responsive: {
+          0: {
+            items: 2,
+            dots: false
+          },
+          768: {
+            items: 2,
+            dots: false
+          },
+          992: {
+            items: 9,
+            dots: false
+          }
+        }
+      });
+    });
+  </script>
+  <script>
+    function slowScroll(id) {
+      $('html, body').animate({
+        scrollTop: $(id).offset().top
+      }, 500);
+    }
+
+    $(document).on("scroll", function () {
+      if($(window).scrollTop() === 0)
+        $("header").removeClass("fixed");
+      else
+        $("header").attr("class", "fixed");
+    });
+  </script>
+
+  <style>
+    #slider .owl-item img {
+      width: 100px !important;
+      height: auto !important;
+    }
+    button:focus, button:active, button:focus-visible {
+      outline: none !important;
+      box-shadow: none !important;
+    }
+  </style>
+</body>
+</html>

@@ -1,0 +1,176 @@
+{% extends "goods/index.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet"  href="{% static 'css/Breadcrumps.css' %}?v=1">
+{% include "goods/modals/equipment_choice2.html" %}
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <nav class="breadcrumbs bj8-text-sm" aria-label="Breadcrumbs">
+          <ol class="bj8-flex bj8-flex-wrap bj8-gap-2xs">
+            <li class="breadcrumbs__item">
+              <a href="/" class="bj8-color-inherit">Главная</a>
+              <span class="bj8-color-contrast-lower bj8-margin-left-2xs" aria-hidden="true">/</span>
+            </li>
+            <li class="breadcrumbs__item">
+              <a href="{% url 'category_detail_path' product.category.url %}" class="bj8-color-inherit">{{ product.category }}</a>
+              <span class="bj8-color-contrast-lower bj8-margin-left-2xs" aria-hidden="true">/</span>
+            </li>
+            <li class="breadcrumbs__item">
+              <a href="/brand/{{ product.brand|slugify }}" class="bj8-color-inherit">{{ product.brand }}</a>
+              <span class="bj8-color-contrast-lower bj8-margin-left-2xs" aria-hidden="true">/</span>
+            </li>
+            <li class="breadcrumbs__item" aria-current="page">{{ product.title }}</li>
+          </ol>
+        </nav>
+        <div class="row">
+          <div class="col-md-6">
+            <h3 class="mb-3">Модель: {{ product.title }}</h3>
+            <div class="d-flex flex-column">
+              <span class="h5">Категория:
+                 <!-- <a class="category-link" href="{% url 'category_detail_path' product.category.url %}"> {{ product.category }}</a>-->
+                  <a class="category-link" href="/?category={{ product.category }}">{{ product.category }}</a>
+              </span>
+              <span class="h5">Бренд:
+                  <a class="category-link" href="/brand/{{ product.brand|slugify }}">{{ product.brand }}</a>
+              </span>
+              <span class="h5">Цена:
+                {% if product.price > 0 %}
+                  {{ product.price }}{{ product.currency.symbol }}
+                {% else %}
+                  по запросу
+                {% endif %}
+              </span>
+              <span class="h5">Наличие:
+                {% if product.availability > 0 %}
+                  {{ product.availability }} шт
+                {% else %}
+                  под заказ
+                {% endif %}
+
+              </span>
+
+                {% if request.user.is_authenticated %}
+                <form action="{% url 'add_to_cart' product.id %}" method="POST" class="add-to-cart-form">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input class="rm4-form-control rm4-text-sm quantity-field" type="number" name="quantity" value="1" min="1" step="1" style="width: 75px;">
+                        <div class="input-group-append">
+                            <button type="submit" class="fw3-btn fw3-btn--primary" style="margin-left: 5px; height: 40px; margin-top: 8px;">Добавить в корзину</button>
+                        </div>
+                    </div>
+                </form>
+
+                {% else %}
+
+                <p class="text-muted"><span style="color: #ff0000;">!</span> Чтобы добавить товар в корзину, пожалуйста, <a href="{% url 'login' %}">войдите</a>.</p>
+            {% endif %}
+
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card card-product">
+              <img id="productImg" class="img-fluid product-image-detail" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt="" id="src">
+            </div>
+          </div>
+          <div class="col-md-12 my-2">
+            <table class="table table-hover">
+              <thead>
+                  <tr>
+                      <th class="col" colspan="2">Технические характеристики</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% if product.power %}
+                  <tr>
+                      <td>Производительность</td>
+                      <td>{{ product.power }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if product.type %}
+                  <tr>
+                      <td>Исполнение</td>
+                      <td>{{ product.type }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if product.noise %}
+                  <tr>
+                      <td>Шум</td>
+                      <td>{{ product.noise }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if product.refrigerant %}
+                  <tr>
+                      <td>Хладагент</td>
+                      <td>{{ product.refrigerant }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if product.compressor_type %}
+                  <tr>
+                      <td>Тип компрессора</td>
+                      <td>{{ product.compressor_type }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if product.Powerr %}
+                  <tr>
+                      <td>Мощность</td>
+                      <td>{{ product.Powerr }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if product.BlockType %}
+                  <tr>
+                      <td>Тип блока</td>
+                      <td>{{ product.BlockType }}</td>
+                  </tr>
+                  {% endif %}
+                  {% if product.split_type %}
+                  <tr>
+                      <td>Тип сплита</td>
+                      <td>{{ product.split_type }}</td>
+                  </tr>
+                  {% endif %}
+                   {% if product.invertor %}
+                      <tr>
+                        <td>Инвентор</td>
+                        <td>Есть</td>
+                      </tr>
+                    {% endif %}
+                  {% if product.SplitSystem %}
+                  <tr>
+                      <td>Сплит система</td>
+                      <td>{{ product.SplitSystem }}</td>
+                  </tr>
+                  {% endif %}
+                  {% for attribute in attributes.all %}
+                  <tr>
+                      <td>{{ attribute.name }}</td>
+                      <td>{{ attribute.value }}</td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+
+          {% if product.description %}
+          <div class="col-md-12">
+            <h4 class="mb-3">Описание товара</h4>
+            {{ product.description }}
+          </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="productImageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <img class="img-fluid" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt="" id="src">
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/product_detail.js"></script>
+{% endblock %}

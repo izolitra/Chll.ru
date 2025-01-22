@@ -1,0 +1,212 @@
+
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
+* {
+  font: inherit;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: hsl(0, 0%, 100%);
+  font-family: system-ui, sans-serif;
+  color: hsl(230, 7%, 23%);
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.4;
+}
+
+h1, h2, h3, h4 {
+  line-height: 1.2;
+  color: hsl(230, 13%, 9%);
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 2.5rem; /* 40px */
+}
+
+h2 {
+  font-size: 2.125rem; /* 34px */
+}
+
+h3 {
+  font-size: 1.75rem; /* 28px */
+}
+
+h4 {
+  font-size: 1.375rem; /* 22px */
+}
+
+ol, ul, menu {
+  list-style: none;
+}
+
+button, input, textarea, select {
+  background-color: transparent;
+  border-radius: 0;
+  color: inherit;
+  line-height: inherit;
+  -webkit-appearance: none;
+          appearance: none;
+}
+
+textarea {
+  resize: vertical;
+  overflow: auto;
+  vertical-align: top;
+}
+
+a {
+  color: hsl(250, 84%, 54%);
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+img, video, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* --------------------------------
+
+Component
+
+-------------------------------- */
+
+:root {
+  --avatar-sm: 1em;
+  --avatar-md: 2em;
+  --avatar-lg: 3em;
+}
+
+.avatar {
+  position: relative;
+  display: block;
+  width: 1em;
+  height: 1em;
+  font-size: 1em; /* avatar size */
+}
+
+.avatar--sm {
+  font-size: var(--avatar-sm);
+}
+
+.avatar--md {
+  font-size: var(--avatar-md);
+}
+
+.avatar--lg {
+  font-size: var(--avatar-lg);
+}
+
+.avatar__figure {
+  width: 1em;
+  height: 0;
+  padding-bottom: 1em;
+  border-radius: 50%; /* avatar border-radius */
+  overflow: hidden;
+}
+
+.avatar__img, .avatar__placeholder {
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  width: 1em;
+  height: 1em;
+  border-radius: inherit;
+}
+
+.avatar__placeholder {
+  background-color: hsl(240, 4%, 95%);
+  color: hsl(225, 4%, 47%); /* icon color */
+  fill: transparent;
+}
+
+.avatar--btn {
+  background-color: transparent;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  color: inherit;
+  line-height: inherit;
+  -webkit-appearance: none;
+          appearance: none;
+  cursor: pointer;
+}
+
+/* status */
+.avatar__status {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: inline-block;
+  width: 0.2em;
+  height: 0.2em;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px hsl(0, 0%, 100%);
+  background-color: hsl(225, 4%, 47%);
+}
+
+.avatar__status--active {
+  background-color: hsl(170, 78%, 36%);
+}
+
+.avatar__status--busy {
+  background-color: hsl(342, 89%, 48%);
+}
+
+.avatar__initials, .avatar__users-counter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1em;
+  height: 1em;
+  border-radius: inherit;
+  background-color: hsl(240, 4%, 85%);
+  color: hsl(230, 13%, 9%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar__initials { /* initials - show letters if you don't have img */
+  text-align: center;
+}
+
+.avatar__initials span {
+  font-size: 0.5em;
+}
+
+/* tot number of users in a group of avatars */
+.avatar__users-counter span {
+  font-size: 0.42em;
+}
+
+/* group */
+.avatar-group {
+  display: flex;
+  /* 👇 optional -> edit the size of all the avatars in the group */
+  /* font-size: 1.75em; */
+}
+
+.avatar-group .avatar {
+  margin-left: -0.1em;
+}
+
+.avatar-group .avatar__figure {
+  box-shadow: 0 0 0 3px hsl(0, 0%, 100%);
+}
+
+

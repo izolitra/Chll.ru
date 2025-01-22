@@ -1,0 +1,218 @@
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
+* {
+  font: inherit;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4 {
+  line-height: 1.2;
+  color: hsl(230, 13%, 9%);
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 2.5rem; /* 40px */
+}
+
+h2 {
+  font-size: 2.125rem; /* 34px */
+}
+
+h3 {
+  font-size: 1.75rem; /* 28px */
+}
+
+h4 {
+  font-size: 1.375rem; /* 22px */
+}
+
+ol, ul, menu {
+  list-style: none;
+}
+
+button, input, textarea, select {
+  background-color: transparent;
+  border-radius: 0;
+  color: inherit;
+  line-height: inherit;
+  -webkit-appearance: none;
+          appearance: none;
+}
+
+textarea {
+  resize: vertical;
+  overflow: auto;
+  vertical-align: top;
+}
+
+a {
+  color: hsl(250, 84%, 54%);
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+img, video, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* --------------------------------
+
+Forms
+
+-------------------------------- */
+
+.cd-form-control {
+  background: hsl(240, 4%, 95%);
+  box-shadow: inset 0 0 0 1px hsl(240, 4%, 85%);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375em;
+  font-size: 1em;
+  line-height: 1.2;
+  transition: 0.2s;
+}
+
+.cd-form-control::placeholder {
+  opacity: 1;
+  color: hsl(240, 4%, 65%);
+}
+
+.cd-form-control:focus, .cd-form-control:focus-within {
+  background: hsl(0, 0%, 100%);
+  outline: none;
+  box-shadow: inset 0 0 0 1px hsla(240, 4%, 85%, 0),
+              0 0 0 2px hsl(250, 84%, 54%),
+              0 0.3px 0.4px hsla(230, 13%, 9%, 0.025),
+              0 0.9px 1.5px hsla(230, 13%, 9%, 0.05),
+              0 3.5px 6px hsla(230, 13%, 9%, 0.1);
+}
+
+/* --------------------------------
+
+Icons
+
+-------------------------------- */
+
+.cd-icon {
+  --size: 1em;
+  font-size: var(--size);
+  height: 1em;
+  width: 1em;
+  display: inline-block;
+  color: inherit;
+  fill: currentColor;
+  line-height: 1;
+  flex-shrink: 0;
+  max-width: initial;
+}
+
+.cd-icon--is-spinning { /* rotate the icon infinitely */
+  animation: cd-icon-spin 1s infinite linear;
+}
+
+@keyframes cd-icon-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.cd-icon use { /* SVG symbols - enable icon color corrections */
+  color: inherit;
+  fill: currentColor;
+}
+
+/* --------------------------------
+
+Component
+
+-------------------------------- */
+
+.floating-label-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.floating-label {
+  background: hsl(0, 0%, 100%);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375em;
+  line-height: 1;
+  font-size: 0.9375rem;
+  color: hsl(240, 4%, 65%);
+  position: absolute;
+  top: 0;
+  left: calc(1rem - 0.5rem); /* calc((floating-label-control left padding) - (floating-label left padding)) */
+  transform: translateY(-50%);
+  transition: transform 0.2s cubic-bezier(0.215, 0.61, 0.355, 1), color 0.2s;
+  clip: auto;
+  -webkit-clip-path: none;
+          clip-path: none;
+}
+
+.floating-label-control {
+  background-color: hsl(0, 0%, 100%);
+  padding: 0.75rem calc(1rem + 24px) 0.75rem 1rem;
+}
+
+.floating-label-control:placeholder-shown { /* input with no content */
+  background-color: hsl(240, 4%, 95%);
+}
+
+.floating-label-control:placeholder-shown + .floating-label { /* floating label state A - not visible */
+  clip: rect(1px, 1px, 1px, 1px);
+  -webkit-clip-path: inset(50%);
+          clip-path: inset(50%);
+  transform: translateY(-25%);
+}
+
+.floating-label-control ~ .cd-icon {
+  color: hsl(225, 4%, 47%);
+  pointer-events: none;
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 24px;
+  width: 24px;
+}
+
+/* focus */
+.floating-label-control:focus {
+  background-color: hsl(0, 0%, 100%);
+}
+.floating-label-control:focus ~ .cd-icon {
+  color: hsl(250, 84%, 54%);
+}
+.floating-label-control:focus + .floating-label {
+  color: hsl(250, 84%, 54%);
+}
+
+/* --------------------------------
+
+Utilities
+
+-------------------------------- */
+
+.cd-width-100\% {
+  width: 100%;
+}
+
+.cd-position-relative {
+  position: relative;
+}

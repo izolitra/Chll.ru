@@ -1,0 +1,342 @@
+
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
+* {
+  font: inherit;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+
+
+h1, h2, h3, h4 {
+  line-height: 1.2;
+  color: hsl(230, 13%, 9%);
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 2.0736rem;
+}
+
+h2 {
+  font-size: 1.728rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+h4 {
+  font-size: 1.2rem;
+}
+
+ol, ul, menu {
+  list-style: none;
+}
+
+button, input, textarea, select {
+  background-color: transparent;
+  border-radius: 0;
+  color: inherit;
+  line-height: inherit;
+  appearance: none;
+}
+
+
+
+
+
+
+
+textarea {
+  resize: vertical;
+  overflow: auto;
+  vertical-align: top;
+}
+
+a {
+  color: hsl(250, 84%, 54%);
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+img, video, svg {
+  display: block;
+  max-width: 100%;
+}
+
+
+/* variables */
+:root {
+  /* colors */
+  --tv5-color-primary-hsl: 250, 84%, 54%;
+  --tv5-color-bg-hsl: 0, 0%, 100%;
+  --tv5-color-contrast-high-hsl: 230, 7%, 23%;
+  --tv5-color-contrast-higher-hsl: 230, 13%, 9%;
+  --tv5-color-contrast-lower-hsl: 240, 4%, 85%;
+  --tv5-color-bg-dark-hsl: 240, 4%, 95%;
+  --tv5-color-bg-light-hsl: 0, 0%, 100%;
+  --tv5-color-bg-lighter-hsl: 0, 0%, 100%;
+  --tv5-color-white-hsl: 0, 0%, 100%;
+  --tv5-color-black-hsl: 230, 13%, 9%;
+
+  /* spacing */
+  --tv5-space-sm: 0.75rem;
+  --tv5-space-md: 1.25rem;
+  --tv5-space-2xs: 0.375rem;
+
+  /* typography */
+  --tv5-text-sm: 0.833rem;
+}
+
+@media(min-width: 64rem){
+  :root {
+    /* spacing */
+    --tv5-space-sm: 1.125rem;
+    --tv5-space-md: 2rem;
+    --tv5-space-2xs: 0.5625rem;
+
+    /* typography */
+    --tv5-text-sm: 1rem;
+  }
+}
+
+
+
+
+
+
+/* buttons */
+.tv5-btn {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1em;
+  white-space: nowrap;
+  text-decoration: none;
+  background: hsl(var(--tv5-color-bg-dark-hsl));
+  color: hsl(var(--tv5-color-contrast-higher-hsl));
+  cursor: pointer;
+  text-decoration: none;
+  line-height: 1.2;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: all 0.2s ease;
+  will-change: transform;
+  padding: var(--tv5-space-2xs) var(--tv5-space-sm);
+  border-radius: 0.25em;
+}
+
+.tv5-btn:focus-visible {
+  box-shadow: 0px 0px 0px 2px hsl(var(--tv5-color-bg-hsl)), 0px 0px 0px 4px hsla(var(--tv5-color-contrast-higher-hsl), 0.15);
+  outline: none;
+}
+
+.tv5-btn:active {
+  transform: translateY(2px);
+}
+
+.tv5-btn--subtle {
+  background: hsl(var(--tv5-color-bg-lighter-hsl));
+  color: hsl(var(--tv5-color-contrast-higher-hsl));
+  box-shadow: inset 0px 1px 0px hsla(var(--tv5-color-white-hsl), 0.1), 0px 0px 0px 1px hsla(var(--tv5-color-black-hsl), 0.02), 0px 1px 3px -1px hsla(var(--tv5-color-black-hsl), 0.2), 0 0.3px 0.4px rgba(0, 0, 0, 0.025),0 0.9px 1.5px rgba(0, 0, 0, 0.05), 0 3.5px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tv5-btn--subtle:hover {
+  background: hsl(var(--tv5-color-bg-light-hsl));
+  box-shadow: inset 0px 1px 0px hsla(var(--tv5-color-white-hsl), 0.1), 0px 0px 0px 1px hsla(var(--tv5-color-black-hsl), 0.02), 0px 1px 3px -1px hsla(var(--tv5-color-black-hsl), 0.2), 0 0.1px 0.3px rgba(0, 0, 0, 0.06),0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+.tv5-btn--subtle:focus {
+  box-shadow: inset 0px 1px 0px hsla(var(--tv5-color-white-hsl), 0.1), 0px 0px 0px 1px hsla(var(--tv5-color-black-hsl), 0.02), 0px 1px 3px -1px hsla(var(--tv5-color-black-hsl), 0.2), 0 0.1px 0.3px rgba(0, 0, 0, 0.06),0 1px 2px rgba(0, 0, 0, 0.12), 0px 0px 0px 2px hsl(var(--tv5-color-bg-hsl)), 0px 0px 0px 4px hsl(var(--tv5-color-contrast-high-hsl));
+}
+
+/* icons */
+.tv5-icon {
+  height: var(--tv5-size, 1em);
+  width: var(--tv5-size, 1em);
+  display: inline-block;
+  color: inherit;
+  fill: currentColor;
+  line-height: 1;
+  flex-shrink: 0;
+  max-width: initial;
+}
+
+.tv5-icon--md {
+  --tv5-size: 32px;
+}
+
+/* component */
+.table {
+  position: relative;
+  z-index: 1;
+}
+
+.table:not(.table--expanded) {
+  border-collapse: separate;
+  border-spacing: 0 var(--tv5-space-md);
+  margin-top: calc(-2 * var(--tv5-space-md));
+}
+.table:not(.table--expanded) .table__header {
+  position: absolute;
+  clip: rect(1px, 1px, 1px, 1px);
+  -webkit-clip-path: inset(50%);
+          clip-path: inset(50%);
+}
+.table:not(.table--expanded) .table__row .table__cell:first-child {
+  border-radius: 0.25em 0.25em 0 0;
+}
+.table:not(.table--expanded) .table__row .table__cell:last-child {
+  border-radius: 0 0 0.25em 0.25em;
+}
+.table:not(.table--expanded) .table__row .table__cell:last-child::after {
+  display: none;
+}
+.table:not(.table--expanded) .table__cell {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  text-align: right;
+  padding: var(--tv5-space-md);
+  background-color: hsl(var(--tv5-color-bg-light-hsl));
+}
+.table:not(.table--expanded) .table__cell::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: var(--tv5-space-md);
+  width: calc(100% - 2 * var(--tv5-space-md));
+  height: 1px;
+  background-color: hsl(var(--tv5-color-contrast-lower-hsl));
+}
+.table:not(.table--expanded) .table__label {
+  font-weight: bold;
+  text-align: left;
+  color: hsl(var(--tv5-color-contrast-higher-hsl));
+  margin-right: var(--tv5-space-md);
+}
+
+.table--expanded {
+  border-bottom: 1px solid hsl(var(--tv5-color-contrast-lower-hsl));
+}
+.table--expanded .table__header .table__cell {
+  position: relative;
+  z-index: 10;
+  background-color: hsl(var(--tv5-color-bg-hsl));
+  border-bottom: 1px solid hsl(var(--tv5-color-contrast-lower-hsl));
+  font-weight: bold;
+  color: hsl(var(--tv5-color-contrast-higher-hsl));
+}
+.table--expanded .table__body .table__row:nth-child(odd) {
+  background-color: hsla(var(--tv5-color-bg-dark-hsl), 0.85);
+}
+.table--expanded .table__cell {
+  padding: var(--tv5-space-sm);
+}
+.table--expanded .table__label {
+  display: none;
+}
+.table--expanded .table__header--sticky .table__cell {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+}
+
+
+
+.table--loaded {
+  opacity: 1;
+}
+
+[class*=table--expanded]::before {
+  display: none;
+}
+
+.table--expanded\@xs::before {
+  content: "collapsed";
+}
+@media (min-width: 32rem) {
+  .table--expanded\@xs::before {
+    content: "expanded";
+  }
+}
+
+.table--expanded\@sm::before {
+  content: "collapsed";
+}
+@media (min-width: 48rem) {
+  .table--expanded\@sm::before {
+    content: "expanded";
+  }
+}
+
+.table--expanded\@md::before {
+  content: "collapsed";
+}
+@media (min-width: 64rem) {
+  .table--expanded\@md::before {
+    content: "expanded";
+  }
+}
+
+.table--expanded\@lg::before {
+  content: "collapsed";
+}
+@media (min-width: 80rem) {
+  .table--expanded\@lg::before {
+    content: "expanded";
+  }
+}
+
+.table--expanded\@xl::before {
+  content: "collapsed";
+}
+@media (min-width: 90rem) {
+  .table--expanded\@xl::before {
+    content: "expanded";
+  }
+}
+
+/* utility classes */
+.tv5-text-center {
+  text-align: center;
+}
+
+.tv5-ws-nowrap {
+  white-space: nowrap;
+}
+
+.tv5-text-left {
+  text-align: left;
+}
+
+.tv5-text-sm {
+  font-size: var(--tv5-text-sm);
+}
+
+.tv5-width-100\% {
+  width: 100%;
+}
+
+.tv5-z-index-1 {
+  z-index: 1;
+}
+
+.tv5-position-relative {
+  position: relative;
+}
+
+.tv5-text-right {
+  text-align: right;
+}
+

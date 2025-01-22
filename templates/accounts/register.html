@@ -1,0 +1,60 @@
+{% extends "goods/index.html" %}
+{% load static %}
+{% block title %}Регистрация{% endblock %}
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/fonts.css' %}?v=1">
+<link rel="stylesheet" href="{% static 'css/Login.css' %}?v=1">
+<div class="custom-modal d-flex justify-content-center align-items-center">
+  <div class="p-4 custom-modal-dialog" style="max-width: 600px; width: 100%;">
+    <h3 class="text-dark registration-heading mb-4 text-center">Регистрация</h3>
+
+    <form action="{% url 'register' %}" method="post" autocomplete="off">
+      {% csrf_token %}
+      <fieldset>
+        <div class="floating-label-grid">
+          <div class="cd-position-relative">
+            <input class="floating-label-control cd-form-control cd-width-100%" type="text" name="username" id="id_username" placeholder="Логин" autocomplete="new-username">
+            <label class="floating-label" for="id_username">Логин</label>
+            <svg class="cd-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <g fill="currentColor">
+                <path d="M21 21H3c-1.103 0-2-.897-2-2V5c0-1.103.897-2 2-2h18c1.103 0 2 .897 2 2v14c0 1.103-.897 2-2 2z" opacity=".4"></path>
+                <circle cx="8" cy="9" r="2"></circle>
+                <path d="M8 12a4 4 0 0 0-3.789 2.715c-.214.633.294 1.285.962 1.285h5.654c.668 0 1.177-.652.962-1.285A4 4 0 0 0 8 12z"></path>
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h5"></path>
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 14h5"></path>
+              </g>
+            </svg>
+          </div>
+
+          <div class="cd-position-relative">
+            <input class="floating-label-control cd-form-control cd-width-100%" type="password" name="password1" id="id_password1" placeholder="Пароль" autocomplete="new-password">
+            <label class="floating-label" for="id_password1">Пароль</label>
+            <svg class="cd-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <g fill="currentColor">
+                <path d="M20 8h-3V6a5 5 0 0 0-10 0v2H4c-1.103 0-2 .897-2 2v10c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V10c0-1.103-.897-2-2-2zm-8 8a3 3 0 0 1-2.816-2h5.632A3 3 0 0 1 12 16zm3-4H9V6a3 3 0 1 1 6 0v6z" opacity=".4"></path>
+                <path d="M12 16a3 3 0 0 0 2.816-2H9.184A3 3 0 0 0 12 16z"></path>
+              </g>
+            </svg>
+          </div>
+
+          <div class="cd-position-relative">
+            <input class="floating-label-control cd-form-control cd-width-100%" type="password" name="password2" id="id_password2" placeholder="Повторите пароль" autocomplete="new-password">
+            <label class="floating-label" for="id_password2">Повторите пароль</label>
+            <svg class="cd-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <g fill="currentColor">
+                <path d="M20 8h-3V6a5 5 0 0 0-10 0v2H4c-1.103 0-2 .897-2 2v10c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V10c0-1.103-.897-2-2-2zm-8 8a3 3 0 0 1-2.816-2h5.632A3 3 0 0 1 12 16zm3-4H9V6a3 3 0 1 1 6 0v6z" opacity=".4"></path>
+                <path d="M12 16a3 3 0 0 0 2.816-2H9.184A3 3 0 0 0 12 16z"></path> </g>
+            </svg>
+          </div>
+        </div>
+      </fieldset>
+      <div class="d-grid col-12 mx-auto mt-3">
+        <button type="submit" class="fw3-btn fw3-btn--primary custom-red-btn btn-block">Зарегистрироваться</button>
+      </div>
+      <p class="text-center mt-3">Уже есть аккаунт? <a class="text-primary" href="/login">Войти</a></p>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

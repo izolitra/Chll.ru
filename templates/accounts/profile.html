@@ -1,0 +1,188 @@
+{% extends "goods/index.html" %}
+{% load static %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}?v=1">
+    <link rel="stylesheet" href="{% static 'js/cart.js' %}?v=1">
+    {% include "goods/modals/equipment_choice.html" %}
+    <div class="row">
+        <div class="col-12 mb-3 text-center">
+
+            <h1>{{ request.user.username }}</h1>
+            <p>Персональная скидка: {{ request.user.profile.discount }}%</p>
+                {% if request.user.is_staff %}
+        <a href="{% url 'admin:index' %}" class="btn btn-primary">Административная панель</a>
+    {% endif %}
+
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="fw3-btn fw3-btn--primary leave custom-red-btn">Выйти</button>
+            </form>
+        </div>
+    </div>
+
+
+
+
+    {% if request.user.cart.products.all %}
+    <div class="col-12 mb-3 text-center" style="font-size: 30px;">
+        Корзина
+    </div>
+        <div class="custom-modal d-flex justify-content-center align-items-center">
+            <div class="p-4 custom-modal-dialog" style="max-width: 1500px; width: 100%;">
+                <table class="table table--expanded@sm tv5-position-relative tv5-z-index-1 tv5-width-100% tv5-text-sm js-table" aria-label="Table Example">
+                    <thead class="table__header table__header--sticky">
+                        <tr class="table__row">
+                            <th class="table__cell tv5-text-left" scope="col">Модель</th>
+                            <th class="table__cell tv5-text-left" scope="col">Бренд</th>
+                            <th class="table__cell tv5-text-left" scope="col">Количество</th>
+                            <th class="table__cell tv5-text-left" scope="col">Цена</th>
+                            <th class="table__cell tv5-text-left" scope="col">Действие</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table__body">
+                        {% for product in request.user.cart.products.all %}
+                            <tr class="table__row">
+                                <td class="table__cell" role="cell">
+                                    <span class="table__label" aria-hidden="true">Название:</span> <a href="{{ product.get_absolute_url }}" class="mt-4 product-name text-dark">{{ product.title }}</a>
+                                </td>
+                                <td class="table__cell" role="cell">
+                                    <span class="table__label" aria-hidden="true">Бренд:</span> <a href="/brand/{{ product.brand|slugify }}" class="bj8-color-inherit">{{ product.brand }}</a>
+                                </td>
+                                <td class="table__cell" role="cell">
+                                    <span class="table__label" aria-hidden="true">Количество:</span>
+                                    {% for cart_quantity in product.cartquantity_set.all %}
+                                        {% if cart_quantity.cart_id == request.user.cart.id %}
+                                            <span class="table__label" aria-hidden="true">Количество:</span> {{ cart_quantity.quantity }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
+                                <td class="table__cell tv5-ws-nowrap" role="cell">
+                                    <span class="table__label" aria-hidden="true">Цена:</span> {{ product.price }} {{ product.currency.symbol }}
+                                </td>
+                                <td class="table__cell" role="cell">
+                                    <span class="table__label" aria-hidden="true">Действие:</span>
+                                    <form action="{% url 'remove_from_cart' product.id %}" method="POST">
+                                        {% csrf_token %}
+                                        <button type="submit" class="tv5-btn tv5-btn--subtle">Удалить</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        {% if request.user.cart.products.first %}
+                            {% with first_product=request.user.cart.products.first %}
+                                <tr class="table__row">
+                                <td class="table__cell" role="cell" >
+
+                                </td>
+                                <td class="table__cell" role="cell">
+
+                                </td>
+                                <td class="table__cell" role="cell">
+                                    Всего товаров: {{ request.user.cart.get_total_quantity }}
+                                </td>
+                                <td class="table__cell tv5-ws-nowrap" role="cell" style="font-weight: bold;">
+                                        Итого цена: {{ request.user.cart.total_price }} {{ first_product.price.currency.symbol }}₽
+                                </td>
+                                <td class="table__cell" role="cell">
+                                        <button type="button" class="fw3-btn fw3-btn--primary buy" data-toggle="modal" data-target="#equipmentChoiceModal">Заказать</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endwith %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="col-12 mb-3 text-center">
+            <p>Упс, ваша корзина пуста!</p>
+        </div>
+    {% endif %}
+    <script>
+        if (!Util) function Util() {};
+
+        Util.addClass = function (el, className) {
+            var classList = className.split(' ');
+            el.classList.add(classList[0]);
+            if (classList.length > 1) Util.addClass(el, classList.slice(1).join(' '));
+        };
+
+        Util.removeClass = function (el, className) {
+            var classList = className.split(' ');
+            el.classList.remove(classList[0]);
+            if (classList.length > 1) Util.removeClass(el, classList.slice(1).join(' '));
+        };
+
+        Util.toggleClass = function (el, className, bool) {
+            if (bool) Util.addClass(el, className);
+            else Util.removeClass(el, className);
+        };
+
+        (function () {
+            function initTable(table) {
+                checkTableLayout(table); // switch from a collapsed to an expanded layout
+                Util.addClass(table, 'table--loaded'); // show table
+
+                // custom event emitted when window is resized
+                table.addEventListener('update-table', function (event) {
+                    checkTableLayout(table);
+                });
+            };
+
+            function checkTableLayout(table) {
+                var layout = getComputedStyle(table, ':before').getPropertyValue('content').replace(/\'|"/g, '');
+                Util.toggleClass(table, 'table--expanded', layout != 'collapsed');
+            };
+
+            var tables = document.getElementsByClassName('js-table');
+            if (tables.length > 0) {
+                var j = 0;
+                for (var i = 0; i < tables.length; i++) {
+                    var beforeContent = getComputedStyle(tables[i], ':before').getPropertyValue('content');
+                    if (beforeContent && beforeContent != '' && beforeContent != 'none') {
+                        (function (i) { initTable(tables[i]); })(i);
+                        j = j + 1;
+                    } else {
+                        Util.addClass(tables[i], 'table--loaded');
+                    }
+                }
+
+                if (j > 0) {
+                    var resizingId = false,
+                        customEvent = new CustomEvent('update-table');
+                    window.addEventListener('resize', function (event) {
+                        clearTimeout(resizingId);
+                        resizingId = setTimeout(doneResizing, 300);
+                    });
+
+                    function doneResizing() {
+                        for (var i = 0; i < tables.length; i++) {
+                            (function (i) { tables[i].dispatchEvent(customEvent); })(i);
+                        };
+                    };
+
+                    (window.requestAnimationFrame) // init table layout
+                        ? window.requestAnimationFrame(doneResizing)
+                        : doneResizing();
+                }
+            }
+        })();
+    </script>
+
+
+    <style>
+        .fw3-btn--primary.buy {
+            background-color: #43c900 !important;
+            box-shadow: 0 4px 6px rgba(171, 199, 155, 0.83);
+        }
+
+        .fw3-btn--primary.leave {
+            background-color: #c90000 !important;
+            box-shadow: 0 4px 6px rgba(220, 166, 174, 0.83);
+        }
+    </style>
+
+
+{% endblock %}

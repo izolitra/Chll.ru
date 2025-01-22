@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap');
+
+body {
+    font-family: 'Nunito', sans-serif;
+}
+
+.logo {
+    /* Если у вас есть специфические стили для .logo, вы можете оставить их здесь. */
+    font-family: 'Nunito', sans-serif;
+}
+
+

@@ -1,0 +1,31 @@
+<div class="modal fade" id="requestModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Запрос</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            {% csrf_token %}
+                <input required type="text" id="namethree" name="namethree" class="rm4-form-control form" placeholder="Имя*">
+                <input required type="text" id="phonethree" name="phonethree" class="rm4-form-control form" placeholder="Телефон*">
+                <input required type="text" id="emailthree" name="emailthree" class="rm4-form-control form" placeholder="Email-адрес*">
+            <input id="multipleFileInputthree" class="form-control-file my-2" type="file" name="file" multiple>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+          <button type="button" id="sendRequestBtn" class="btn btn-primary">Отправить</button>
+        </div>
+      </div>
+    </div>
+</div>
+<script src="/static/js/send_email.js"></script>
+
+<style>
+    .rm4-form-control.form {
+        width: 465px;
+        margin-top: 10px;
+    }
+</style>

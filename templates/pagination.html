@@ -1,0 +1,29 @@
+<div class="pagination">
+    <span class="step-links">
+        {% if page.has_previous %}
+            <a href="{% querystring page_number=1 %}">&laquo; First</a>
+            <a href="{% querystring page_number=page.previous_page_number %}">Previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page.number }} of {{ page.paginator.num_pages }}.
+        </span>
+
+        {% if page.has_next %}
+            <a href="{% querystring page_number=page.next_page_number %}">Next</a>
+            <a href="{% querystring page_number=page.paginator.num_pages %}">Last &raquo;</a>
+        {% endif %}
+    </span>
+
+    {% if page.paginator.num_pages > 1 %}
+        <span class="page-links">
+            {% for num in page.paginator.page_range %}
+                {% if page.number == num %}
+                    <span class="page-current">{{ num }}</span>
+                {% else %}
+                    <a href="{% querystring page_number=num %}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+        </span>
+    {% endif %}
+</div>

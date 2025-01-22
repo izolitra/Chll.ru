@@ -1,0 +1,32 @@
+{% extends "goods/index.html" %}
+{% load static %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <form class="d-flex my-2 my-lg-0" action="{% url 'search_results' %}" method="get">
+          <input class="form-control" type="search" name="q" placeholder="Поиск" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
+        </form>
+      </div>
+      <div class="col-12 row">
+        <div class="col-12">
+          {% if results.count > 0 %}
+            <h3 class="my-4">Найдены {{ results.count }} товар(-ов) по запросу</h3>
+          {% else %}
+            <h3 class="my-4">По вашему запросу ничего не найдено</h3>
+          {% endif %}
+        </div>
+        {% for product in results %}
+          <div class="col-12 card card-wall my-2">
+            <h4 class="my-0"><a class="category-link text-success" href="{{ product.get_absolute_url }}">{{ product.title }}</a></h4>
+            <span class="font-weight-bold">{{ product.category }}</span>
+            <span>{{ product.description|truncatewords:5 }}</span>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
